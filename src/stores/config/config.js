@@ -6,7 +6,6 @@ export const login = {
 export const cosmos = {
   endpoint: "https://frtl.documents.azure.com",
   databaseId: "ebe",
-  containerId: "app_billing",
   tenantId: login.tenantId,
   clientId: login.clientId,
 };

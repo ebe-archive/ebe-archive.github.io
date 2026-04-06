@@ -1,21 +1,8 @@
 <script>
-  import { downloadBlob } from './DownloadButton.js'
   export let searchResult
-  let f, blobName, buttonText, buttonDisabled
-  $: f = searchResult['74']
-  $: blobName = [f.substring(0, 3), f.substring(3, 6), f].join('/')
-  $: buttonText = 'Download'
-  $: buttonDisabled = false
-
-  const hc = async () => {
-    buttonDisabled = true
-    buttonText = 'Downloading...'
-    await downloadBlob(blobName)
-    setTimeout(function () {
-      buttonText = 'Download'
-      buttonDisabled = false
-    }, 2000)
-  }
+  // Download logic will be updated once the full Pages-based blob path is confirmed.
+  // searchResult.Pages is an array of { page, id, ext } entries.
+  $: pages = searchResult?.Pages ?? []
 </script>
 
 <style>
@@ -25,5 +12,5 @@
 </style>
 
 <div>
-  <button disabled={buttonDisabled} on:click={hc}>{buttonText}</button>
+  <button disabled={true}>Download (coming soon)</button>
 </div>
