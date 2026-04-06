@@ -28,12 +28,21 @@ export const restoreOrClear = (containerId) => {
   searchResults.set(null)
 }
 
+const fe = (p) => p.expr || `c["${p.id}"]`
+
 const buildCondition = (p) => {
+  const f = fe(p)
   switch (p.match) {
-    case '=%':  return `STARTSWITH(c["${p.id}"], @p_${p.id})`
-    case '%=':  return `ENDSWITH(c["${p.id}"], @p_${p.id})`
-    case '%=%': return `CONTAINS(c["${p.id}"], @p_${p.id})`
-    default:    return `c["${p.id}"] = @p_${p.id}`
+    case '=%':  return `STARTSWITH(${f}, @p_${p.id})`
+    case '%=':  return `ENDSWITH(${f}, @p_${p.id})`
+    case '%=%': return `CONTAINS(${f}, @p_${p.id})`
+    case 'i=':  return `${f} = @p_${p.id}`
+    case 'i>=': return `${f} >= @p_${p.id}`
+    case 'i<=': return `${f} <= @p_${p.id}`
+    case 'i>':  return `${f} > @p_${p.id}`
+    case 'i<':  return `${f} < @p_${p.id}`
+    case 'i!=': return `${f} != @p_${p.id}`
+    default:    return `${f} = @p_${p.id}`
   }
 }
 
@@ -50,9 +59,9 @@ export const getSearchResults = async (props, upperCase, containerId) => {
     return i === 0 ? condition : `${p.logic.toUpperCase()} ${condition}`
   })
 
-  // Build SELECT — only visible fields, always include Pages for download.
+  // Build SELECT — visible non-computed fields, always include Pages for count + download.
   const selectFields = props
-    .filter(p => p.show)
+    .filter(p => p.show && !p.expr)
     .map(p => `c["${p.id}"]`)
   if (!selectFields.includes('c["Pages"]')) selectFields.push('c["Pages"]')
 
@@ -62,7 +71,9 @@ export const getSearchResults = async (props, upperCase, containerId) => {
     query: queryText,
     parameters: searchable.map(p => ({
       name: `@p_${p.id}`,
-      value: upperCase ? p.value.trim().toUpperCase() : p.value.trim(),
+      value: p.match.startsWith('i')
+        ? parseInt(p.value.trim(), 10)
+        : upperCase ? p.value.trim().toUpperCase() : p.value.trim(),
     })),
   }
 

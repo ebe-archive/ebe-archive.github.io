@@ -46,6 +46,9 @@
     {/each}
   </p>
   <p class="foot">
+    {#if searchResult.Pages?.length}
+      <small>{searchResult.Pages.length} page{searchResult.Pages.length === 1 ? '' : 's'}</small><br />
+    {/if}
     <DownloadButton {searchResult} />
   </p>
 </div>

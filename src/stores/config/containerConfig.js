@@ -1,11 +1,19 @@
 // Static field definitions per container, derived from SQL export queries.
-// field(id, search, match) — search:true means it appears in the search form by default.
+// field(id, search, match, show) — search:true means it appears in the search form by default.
 // logic: 'or' means this condition is OR'd with the previous one (can be toggled to 'and').
+// expr: optional Cosmos SQL expression override (used for computed/derived fields).
 
 const field = (id, search = false, match = '=', show = true) => ({
   id, show, search, match, logic: 'or', value: ''
 })
 const sw = (id) => field(id, true, '=%') // starts-with, search on by default
+
+// PageCount is a virtual field — it searches ARRAY_LENGTH(c["Pages"]) in Cosmos.
+// show is false because the count is always rendered client-side from Pages.length.
+const pageCount = () => ({
+  id: 'PageCount', show: false, search: false, match: 'i>=', logic: 'or', value: '',
+  expr: 'ARRAY_LENGTH(c["Pages"])',
+})
 
 export default {
   app_billing: [
@@ -33,6 +41,7 @@ export default {
     field('ShipperCode'),
     field('ConsigneeCode'),
     field('RefNumber'),
+    pageCount(),
   ],
   app_ar: [
     field('id', false, '=%', false),
@@ -48,6 +57,7 @@ export default {
     field('CheckDate'),
     field('SubmissionDate'),
     field('EffectiveDate'),
+    pageCount(),
   ],
   app_ap: [
     field('id', false, '=%', false),
@@ -65,6 +75,7 @@ export default {
     field('TerminalNumber'),
     field('Location'),
     field('PostingDate'),
+    pageCount(),
   ],
   app_ds: [
     field('id', false, '=%', false),
@@ -77,6 +88,7 @@ export default {
     field('FromDate'),
     field('SettlementType'),
     field('ToDate'),
+    pageCount(),
   ],
   app_driver: [
     field('id', false, '=%', false),
@@ -105,5 +117,6 @@ export default {
     field('ADCompany'),
     field('DABatchID', false, '=', false),
     field('LicenseState'),
+    pageCount(),
   ],
 }
