@@ -10,6 +10,8 @@ app registration must have following permissions:
 
 <img width="462" alt="image" src="https://user-images.githubusercontent.com/7390156/188228058-fcc81d34-694a-4623-818c-59272a75120c.png">
 
+See [APP_REGISTRATION.md](APP_REGISTRATION.md) for step-by-step Azure CLI commands to create and configure the app registration, including redirect URIs, API permissions, and admin consent.
+
 # additional setup for users
 
 currently this is setup for each user to have access provisioned in azure storage and cosmosdb
@@ -32,7 +34,6 @@ az cosmosdb sql role assignment create `
   --scope "/" `
   --principal-id $id `
   --role-definition-id $readOnlyRoleDefinitionId
-}
 ```
 
 ## storage
