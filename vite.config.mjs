@@ -7,4 +7,7 @@ export default defineConfig({
     nodePolyfills(),
     svelte(),
   ],
+  build: {
+    sourcemap: false,
+  },
 })
