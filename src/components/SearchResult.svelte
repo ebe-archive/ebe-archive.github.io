@@ -1,31 +1,34 @@
 <script>
   export let searchResult
+  export let visibleFields = null
   import DownloadButton from './DownloadButton.svelte'
-  import docProps from '../stores/preferences/docProps'
-  import docTypes from '../stores/preferences/docTypes'
-  const propKeyToName = (k) => docProps.find((x) => x.id == k)?.name
-  const typeKeyToName = (k) => docTypes.find((x) => x.id == k)?.name
+
+  const exclude = new Set(['_rid', '_self', '_etag', '_attachments', '_ts', 'Pages', 'full_text'])
+  $: displayFields = visibleFields
+    ? Object.entries(searchResult).filter(([k]) => visibleFields.has(k))
+    : Object.entries(searchResult).filter(([k]) => !exclude.has(k))
+
+  // Strip T00:00:00 / time portion from ISO date strings for cleaner display.
+  const fmt = (v) => typeof v === 'string' && /T\d{2}:\d{2}/.test(v) ? v.split('T')[0] : v
 </script>
 
 <style>
   div {
-    display: inline-block;
     font-size: x-small;
     padding: 1rem;
-    transition: transform 0.2s; /* Animation */
-    margin: 0.25rem;
     border-radius: 0.25rem;
     border: 1px solid lightslategray;
+    transition: box-shadow 0.15s, border-color 0.15s;
   }
   div:hover {
-    border: 1px solid grey;
+    border-color: steelblue;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     background-color: #f5f7ff;
-    transform: scale(1.75);
   }
   p.head, p.foot {
     text-align: center;
   }
-  p.body{
+  p.body {
     border-top: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
     padding-top: 0.5rem;
@@ -33,21 +36,16 @@
   }
 </style>
 
-<div class="zoom">
+<div>
   <p class="head">
-    <b>{typeKeyToName(searchResult['72'])}</b>
+    <b>{searchResult.Doc_Type ?? searchResult.id}</b>
   </p>
   <p class="body">
-    {#each Object.keys(searchResult) as key}
-      {#if propKeyToName(key)}
-        <b>{propKeyToName(key)}</b>
-        : {searchResult[key]}
-        <br />
-      {/if}
+    {#each displayFields as [key, value]}
+      <b>{key}</b>: {fmt(value)}<br />
     {/each}
   </p>
   <p class="foot">
     <DownloadButton {searchResult} />
   </p>
-  
 </div>

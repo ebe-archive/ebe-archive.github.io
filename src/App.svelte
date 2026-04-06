@@ -3,10 +3,16 @@
   import Spinner from './components/Spinner.svelte'
   import { InteractiveBrowserCredential as ibc } from '@azure/identity'
   import { login } from './stores/config/config'
+  import { loadContainers } from './stores/containers/containers'
+
+  const init = async () => {
+    await new ibc(login).getToken('')
+    await loadContainers()
+  }
 </script>
 
-{#await new ibc(login).getToken('')}
-  <Spinner message={'Logging in...'} />
+{#await init()}
+  <Spinner message={'Loading...'} />
 {:then _}
   <Content />
 {/await}

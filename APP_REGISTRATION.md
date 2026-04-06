@@ -196,7 +196,23 @@ echo "Done. Verify in the portal: App registrations > $APP_NAME > API permission
 
 ---
 
-## Section 7: Update app configuration
+## Section 7: Configure CosmosDB CORS
+
+The browser-based Azure SDK cannot talk to CosmosDB unless your origins are whitelisted on the account. This is separate from the redirect URIs configured in Section 3 — CosmosDB follows standard CORS rules with no special exceptions, so **every origin including port must be listed explicitly** (unlike Azure AD redirect URIs, `http://localhost` here only matches port 80).
+
+In the Azure portal, go to your CosmosDB account > **Settings > CORS** and add each origin your app runs from. Example:
+
+```
+http://localhost:8080, http://localhost:5173, https://mysite.github.io, https://mysite-preview.vercel.app
+```
+
+Add any other local ports or environment URLs you use. The list should mirror the redirect URIs you configured in Section 3, but with each port listed individually.
+
+> **Note:** If you see a CORS error in the browser console when the app loads or searches, this is almost always the cause.
+
+---
+
+## Section 8: Update app configuration
 
 If you created a new app in Section 3, update `src/stores/config/config.js` with the new IDs.
 

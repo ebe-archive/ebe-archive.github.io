@@ -1,11 +1,15 @@
-import docProps from './docProps';
-import docTypes from './docTypes';
+import containerConfig from '../config/containerConfig'
 
-const s = (a, b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+// Deep-clone each container's field list so mutations don't affect the source defaults.
+const buildDefaults = () =>
+  Object.fromEntries(
+    Object.entries(containerConfig).map(([k, fields]) => [
+      k,
+      fields.map(f => ({ ...f })),
+    ])
+  )
 
 export default {
   upperCase: true,
-  props: docProps.sort((a, b) => s(a,b)),
-  docs: docTypes.sort((a, b) => s(a,b)),
+  containers: buildDefaults(),
 }
-
