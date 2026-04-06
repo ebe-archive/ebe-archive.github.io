@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@azure/cosmos": "^3.17.3",
-    "@azure/identity": "^3.4.2",
+    "@azure/identity": "^4.2.1",
     "@azure/storage-blob": "12.29.1",
     "@sveltejs/vite-plugin-svelte": "^2.5.3",
     "svelte": "^3.59.2",
