@@ -12,6 +12,12 @@ const cache = {}
 
 const cacheKey = (containerId) => `results_${containerId}`
 
+export const clearAllCaches = () => {
+  Object.keys(cache).forEach(k => delete cache[k])
+  Object.keys(localStorage).filter(k => k.startsWith('results_')).forEach(k => localStorage.removeItem(k))
+  searchResults.set(null)
+}
+
 export const restoreOrClear = (containerId) => {
   if (cache[containerId]) {
     searchResults.set(cache[containerId])

@@ -28,4 +28,8 @@ preferences.subscribe(val => {
   localStorage.preferences = JSON.stringify(val)
 })
 
-export const resetPreferences = () => preferences.set(defaultPrefs)
+export const resetPreferences = () => {
+  preferences.set(defaultPrefs)
+  // Defer import to avoid circular dependency
+  import('../search/search.js').then(({ clearAllCaches }) => clearAllCaches())
+}
