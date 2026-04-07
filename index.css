@@ -1,1 +1,17 @@
+/* Readability improvements */
 
+/* Bump dark mode text to near-white for better contrast */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e0e0e0;
+    --bg: #1e1e2a;
+    --accent-bg: #282838;
+  }
+}
+
+/* Use a slightly more readable font stack — Inter is widely available
+   on modern systems and has excellent legibility at small sizes */
+:root {
+  --sans-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Noto Sans", Helvetica, Arial, sans-serif;
+}
