@@ -15,6 +15,20 @@
 </section>
 
 <details>
+  <summary>Downloads</summary>
+  <p>Multi-page documents may take longer to download. Duplicate scans are automatically removed from the final zip file.</p>
+  <label><input type="checkbox" bind:checked={$preferences.suppressDownloadWarning} /> Skip multi-page download warning</label><br />
+  <label><input type="checkbox" bind:checked={$preferences.parallelDownloads} /> Use parallel downloads</label>
+
+  <details style="margin-top: 0.75rem;">
+    <summary>Large files (25+ pages)</summary>
+    <p>Documents with 25 or more pages are more likely to contain duplicate scans and may take significantly longer to download.</p>
+    <label><input type="checkbox" bind:checked={$preferences.suppressBigFileWarning} /> Skip large file download warning</label><br />
+    <label><input type="checkbox" bind:checked={$preferences.parallelBigFileDownloads} /> Use parallel downloads</label>
+  </details>
+</details>
+
+<details>
   <summary>Case Sensitivity</summary>
   <p>Text entered in search boxes will be converted to upper case before querying, since most data in this system is stored in upper case. Uncheck to disable.</p>
   <input type="checkbox" bind:checked={$preferences.upperCase} /> Convert search terms to upper case

@@ -1,11 +1,22 @@
 import { writable } from 'svelte/store'
 import defaultPrefs from './defaultPrefs'
 
+const merge = (saved) => {
+  const merged = { ...saved, containers: {} }
+  for (const [container, defaultFields] of Object.entries(defaultPrefs.containers)) {
+    const savedFields = saved.containers[container] ?? []
+    const savedById = Object.fromEntries(savedFields.map(f => [f.id, f]))
+    // Keep saved fields that still exist in config; add any new ones with their defaults.
+    merged.containers[container] = defaultFields.map(f => savedById[f.id] ?? { ...f })
+  }
+  return merged
+}
+
 const load = () => {
   try {
     const saved = localStorage.preferences ? JSON.parse(localStorage.preferences) : null
-    // If saved prefs are from the old format (no containers key), discard them.
-    return saved?.containers ? saved : defaultPrefs
+    if (!saved?.containers) return defaultPrefs
+    return merge(saved)
   } catch {
     return defaultPrefs
   }

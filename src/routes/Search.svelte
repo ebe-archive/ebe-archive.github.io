@@ -57,7 +57,7 @@
     padding-top: 2rem;
   }
   .pref-panel {
-    background: white;
+    background: var(--bg);
     border-radius: 0.5rem;
     max-width: 700px;
     width: 90%;
@@ -71,12 +71,36 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
   .pref-body {
     overflow-y: auto;
     padding: 1rem 1.5rem 1.5rem;
+  }
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .search-row .logic-btn {
+    min-width: 3rem;
+    padding: 0.25rem 0.5rem;
+    font-size: small;
+    margin: 0;
+  }
+  .search-row .field-name {
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .search-row code {
+    white-space: nowrap;
+  }
+  .search-row input {
+    flex: 1;
+    margin: 0;
+    padding: 0.35rem 0.5rem;
   }
 </style>
 
@@ -98,23 +122,22 @@
   <p><i>No search fields enabled. Open Preferences to configure.</i></p>
 {:else}
   {#each searchableProps as prop, i}
-    <p>
+    <div class="search-row">
       {#if i > 0}
-        <button on:click={() => toggleLogic(prop)}>{prop.logic.toUpperCase()}</button>
+        <button class="logic-btn" on:click={() => toggleLogic(prop)}>{prop.logic.toUpperCase()}</button>
       {/if}
-      <label for={prop.id}>
-        <b>{prop.id}</b>
-        <code>{matchTypes.find(m => m.value === prop.match)?.text ?? prop.match}</code>
-      </label><br />
+      <label class="field-name" for={prop.id}>{prop.id}</label>
+      <code>{matchTypes.find(m => m.value === prop.match)?.text ?? prop.match}</code>
       <input
         id={prop.id}
         placeholder="Type a value..."
         bind:value={prop.value}
         on:keydown={handleKeydown}
+        on:input={() => preferences.update(p => p)}
       />
-    </p>
+    </div>
   {/each}
-  <button on:click={runSearch}>Search</button>
+  <p style="text-align: center;"><button on:click={runSearch}>Search</button></p>
 {/if}
 
 {#if searching}

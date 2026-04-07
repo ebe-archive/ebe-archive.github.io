@@ -11,5 +11,11 @@ const buildDefaults = () =>
 
 export default {
   upperCase: true,
+  // Multi-page downloads (< 25 pages)
+  suppressDownloadWarning: true,
+  parallelDownloads: true,
+  // Big file downloads (25+ pages)
+  suppressBigFileWarning: false,
+  parallelBigFileDownloads: true,
   containers: buildDefaults(),
 }

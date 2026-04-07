@@ -64,6 +64,7 @@ export const getSearchResults = async (props, upperCase, containerId) => {
     .filter(p => p.show && !p.expr)
     .map(p => `c["${p.id}"]`)
   if (!selectFields.includes('c["Pages"]')) selectFields.push('c["Pages"]')
+  if (!selectFields.includes('c["id"]')) selectFields.push('c["id"]')
 
   const queryText = `SELECT TOP 15 ${selectFields.join(', ')} FROM c WHERE ${whereParts.join(' ')}`
 

@@ -16,5 +16,8 @@
     "svelte-spa-router": "^4.0.1",
     "vite": "^4.5.0",
     "vite-plugin-node-polyfills": "^0.17.0"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1"
   }
 }
