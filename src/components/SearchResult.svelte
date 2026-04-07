@@ -26,7 +26,11 @@
     padding: 0.75rem;
     border-radius: 0.25rem;
     border: 1px solid var(--border);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
   }
   .card:hover {
     transform: scale(1.3);
@@ -35,13 +39,12 @@
     position: relative;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     background: var(--bg);
-    font-size: small;
   }
   .foot {
     text-align: center;
-    margin-top: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
     margin-bottom: 0;
-    padding: 0;
   }
   .field-row {
     display: flex;
